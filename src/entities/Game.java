@@ -24,10 +24,35 @@ public class Game {
 	private void initializeBoard() {
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 3; j++) {
-				board[i][j] = 'X'; // just testing if checkForWin works!
+				board[i][j] = '-';
 			}
 		}
 
+	}
+	
+	
+	public void perfomeMove(int row, int column) {
+		if (row < 0 || row > 3 || column < 0 || column > 3) {
+			throw new GameException("Position not exists, try again.");
+		}
+		if (board[row][column] != '-') {
+			throw new GameException("Position is arealdy filled, choose another.");
+		}
+		board[row][column] = currentPlayerMark;
+		drawBoard();
+		if (checkForWin()) {
+			System.out.println("Victory of Player "+currentPlayerMark);
+		}
+		changeCurrentPlayer();
+	}
+	
+	
+	private void changeCurrentPlayer() {
+		if (currentPlayerMark == 'X') {
+			currentPlayerMark = 'O';
+		} else {
+			currentPlayerMark = 'X';
+		}
 	}
 
 	private void drawBoard() {
@@ -70,7 +95,7 @@ public class Game {
 
 	private boolean checkColumnsForWin() {
 		for (int i = 0; i < 3; i++) {
-			if (checkFill(board[0][i], board[1][i], board[0][i])) {
+			if (checkFill(board[0][i], board[1][i], board[2][i])) {
 				return true;
 			}
 		}
@@ -90,6 +115,14 @@ public class Game {
 
 	private boolean checkFill(char c1, char c2, char c3) {
 		return c1 != '-' && c1 == c2 && c2 == c3;
+	}
+	
+	public boolean tie() {
+		if(isBoardFull() && !checkForWin()) {
+			System.out.println("It's a TIE!");
+			return true;
+		}
+		return false;
 	}
 
 }
