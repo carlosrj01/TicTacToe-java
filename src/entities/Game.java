@@ -8,7 +8,7 @@ public class Game {
 	public Game() {
 
 		this.board = new char[3][3];
-		currentPlayerMark = 'X'; 
+		currentPlayerMark = 'X';
 		initializeBoard();
 		drawBoard();
 	}
@@ -53,49 +53,43 @@ public class Game {
 		}
 		return true;
 	}
-	
+
 	public boolean checkForWin() {
 		return checkRowsForWin() || checkColumnsForWin() || checkDiagonalsForWin();
 	}
-	
 
 	private boolean checkRowsForWin() {
-		if (board[0][0] == currentPlayerMark && board[0][1] == currentPlayerMark && board[0][2] == currentPlayerMark) {
-			return true;
-		}
-		if (board[1][0] == currentPlayerMark && board[1][1] == currentPlayerMark && board[1][2] == currentPlayerMark) {
-			return true;
-		}
-		if (board[2][0] == currentPlayerMark && board[2][1] == currentPlayerMark && board[2][2] == currentPlayerMark) {
-			return true;
-		}
 
+		for (int i = 0; i < 3; i++) {
+			if (checkFill(board[i][0], board[i][1], board[i][2])) {
+				return true;
+			}
+		}
 		return false;
 	}
 
 	private boolean checkColumnsForWin() {
-		if (board[0][0] == currentPlayerMark && board[1][0] == currentPlayerMark && board[2][0] == currentPlayerMark) {
-			return true;
+		for (int i = 0; i < 3; i++) {
+			if (checkFill(board[0][i], board[1][i], board[0][i])) {
+				return true;
+			}
 		}
-		if (board[0][1] == currentPlayerMark && board[1][1] == currentPlayerMark && board[2][1] == currentPlayerMark) {
-			return true;
-		}
-		if (board[0][2] == currentPlayerMark && board[1][2] == currentPlayerMark && board[2][2] == currentPlayerMark) {
-			return true;
-		}
-
 		return false;
 	}
-	
+
 	private boolean checkDiagonalsForWin() {
-		if (board[0][0] == currentPlayerMark && board[1][1] == currentPlayerMark && board[2][2] == currentPlayerMark) {
+		if (checkFill(board[0][0],board[1][1],board[2][2])) {
 			return true;
 		}
-		if (board[0][2] == currentPlayerMark && board[1][1] == currentPlayerMark && board[2][0] == currentPlayerMark) {
+		if (checkFill(board[0][2],board[1][1],board[2][0])) {
 			return true;
 		}
 
 		return false;
 	}
-	
+
+	private boolean checkFill(char c1, char c2, char c3) {
+		return c1 != '-' && c1 == c2 && c2 == c3;
+	}
+
 }
